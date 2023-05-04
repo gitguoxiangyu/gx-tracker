@@ -41,5 +41,9 @@ export default class Tracker{
     if (this.baseData.historyTracker){
       this.captureEvents(['pushState','replaceState','popState'])
     }
+
+    if (this.baseData.hashTracker){
+      this.captureEvents(['hashchange'])
+    }
   }
 }
