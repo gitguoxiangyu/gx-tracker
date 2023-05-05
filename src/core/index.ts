@@ -42,6 +42,7 @@ export default class Tracker{
     })
   }
 
+  // 安装事件捕获 
   private installEventTracker(){
     if (this.baseData.historyTracker){
       this.captureEvents(['pushState','replaceState','popState'])
@@ -52,6 +53,7 @@ export default class Tracker{
     }
   }
 
+  // 上报 方法
   private reportMessage<T>(data: T){
     const params = Object.assign(this.baseData , data , {time: new Date().getTime})
 
@@ -61,5 +63,10 @@ export default class Tracker{
     let blobData = new Blob([JSON.stringify(params)], header)
 
     navigator.sendBeacon(this.baseData.requestURL, blobData)
+  }
+
+  // 手动上报
+  public manualTrackerMsg<T> (data: T){
+    this.reportMessage(data)
   }
 }
