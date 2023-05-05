@@ -33,6 +33,11 @@ export default class Tracker{
       window.addEventListener(event , ()=>{
         // 监听到对应事件的回调
         console.log('监听到了' + event)
+        this.reportMessage({
+          event,
+          targetKey,
+          data
+        })
       })
     })
   }
@@ -45,5 +50,16 @@ export default class Tracker{
     if (this.baseData.hashTracker){
       this.captureEvents(['hashchange'])
     }
+  }
+
+  private reportMessage<T>(data: T){
+    const params = Object.assign(this.baseData , data , {time: new Date().getTime})
+
+    let header = {
+      type: 'application/x-www-form-urlencoded'
+    }
+    let blobData = new Blob([JSON.stringify(params)], header)
+
+    navigator.sendBeacon(this.baseData.requestURL, blobData)
   }
 }
